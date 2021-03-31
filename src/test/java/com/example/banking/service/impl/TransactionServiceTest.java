@@ -172,17 +172,20 @@ class TransactionServiceTest {
     void deleteTransaction() throws Exception {
 
         Account ac = accountRepository.save(new Account("test account"));
-        UUID uuid = UUID.fromString("00000000-0000-0000-0000-000000000000");
-        Transaction tran = new Transaction(uuid, BigDecimal.TEN, null, ac);
+        UUID uuid = UUID.randomUUID();
+        Transaction tran = new Transaction(null, BigDecimal.TEN, null, ac);
 //        given(transactionService.makeTransaction(tran, 2)).willReturn(tran);
 
         log.info("******** START : MOC MVC test **********");
-        mvc.perform(post("/transaction/{accountId}/save", ac.getId())
+        String jsonTransaction = mvc.perform(post("/transaction/{accountId}/save", ac.getId())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(asJsonString(tran))
-                .accept(MediaType.APPLICATION_JSON));
+                .accept(MediaType.APPLICATION_JSON))
+                .andReturn().getResponse().getContentAsString();
 
-        String responseJson = mvc.perform(delete("/transaction/{id}", uuid))
+        Transaction transaction = new ObjectMapper().readValue(jsonTransaction, Transaction.class);
+
+        String responseJson = mvc.perform(delete("/transaction/{id}", transaction.getTransactionId()))
                 .andExpect(status().isAccepted())
                 .andDo(print())
                 .andReturn().getResponse().getContentAsString();
