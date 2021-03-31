@@ -2,15 +2,10 @@ package com.example.banking.controllers;
 
 import com.example.banking.entities.Account;
 import com.example.banking.entities.SubAccount;
-import com.example.banking.repository.AccountRepository;
-import com.example.banking.repository.SubAccountRepository;
-import com.example.banking.service.InfSubaccountService;
+import com.example.banking.service.SubaccountService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 
@@ -18,10 +13,10 @@ import java.util.List;
 @RequestMapping(path = "/subaccount", produces = "application/json")
 public class SubAccountController {
 
-    private final InfSubaccountService subaccountService;
+    private final SubaccountService subaccountService;
 
     @Autowired
-    public SubAccountController(InfSubaccountService service) {
+    public SubAccountController(SubaccountService service) {
         this.subaccountService = service;
     }
 

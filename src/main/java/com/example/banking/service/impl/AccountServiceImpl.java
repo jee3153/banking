@@ -3,7 +3,7 @@ package com.example.banking.service.impl;
 import com.example.banking.entities.Account;
 import com.example.banking.repository.AccountRepository;
 import com.example.banking.repository.SubAccountRepository;
-import com.example.banking.service.InfAccountService;
+import com.example.banking.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,13 +11,13 @@ import java.math.BigDecimal;
 import java.util.List;
 
 @Service
-public class AccountService implements InfAccountService {
+public class AccountServiceImpl implements AccountService {
 
     private final AccountRepository accountRepository;
     private final SubAccountRepository subAccountRepository;
 
     @Autowired
-    public AccountService(AccountRepository accountRepository, SubAccountRepository subAccountRepository) {
+    public AccountServiceImpl(AccountRepository accountRepository, SubAccountRepository subAccountRepository) {
         this.accountRepository = accountRepository;
         this.subAccountRepository = subAccountRepository;
     }

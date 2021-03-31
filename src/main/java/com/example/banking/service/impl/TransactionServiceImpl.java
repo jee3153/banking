@@ -4,7 +4,7 @@ import com.example.banking.entities.Account;
 import com.example.banking.entities.Transaction;
 import com.example.banking.repository.AccountRepository;
 import com.example.banking.repository.TransactionRepository;
-import com.example.banking.service.InfTransactionService;
+import com.example.banking.service.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -18,7 +18,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.function.Supplier;
 
 @Service
-public class TransactionService implements InfTransactionService {
+public class TransactionServiceImpl implements TransactionService {
 
     private final TransactionRepository transactionRepository;
     private final AccountRepository accountRepository;
@@ -26,7 +26,7 @@ public class TransactionService implements InfTransactionService {
     private ConcurrentHashMap<Long, ReentrantReadWriteLock> map = new ConcurrentHashMap<>();
 
     @Autowired
-    public TransactionService(TransactionRepository transactionRepository, AccountRepository accountRepository) {
+    public TransactionServiceImpl(TransactionRepository transactionRepository, AccountRepository accountRepository) {
         this.transactionRepository = transactionRepository;
         this.accountRepository = accountRepository;
     }
@@ -87,8 +87,9 @@ public class TransactionService implements InfTransactionService {
             BigDecimal amount = transaction.getPayment();
             account.takeBalance(amount);
             account.addTransaction(transaction);
-
             transaction.setAccount(account);
+            accountRepository.save(account);
+
 //            Transaction transaction = new Transaction(null, account, BigDecimal.valueOf(amount), null);
 
             return transactionRepository.save(transaction);

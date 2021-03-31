@@ -14,7 +14,7 @@ import java.util.List;
 
 @Entity
 @Table(name="accounts")
-@Getter @Setter @NoArgsConstructor @ToString
+@NoArgsConstructor
 public class Account {
 
     @Id
@@ -25,7 +25,7 @@ public class Account {
 
     // ensure mappedBy property matches variable name in targeting class.
     @OneToMany(mappedBy = "account", cascade = CascadeType.ALL)
-    private List<Transaction> transactions;
+    private List<Transaction> transactions = new ArrayList<>();
 
     private BigDecimal balance;
 
@@ -34,6 +34,16 @@ public class Account {
 
     public Account(Long id, String accountName) {
         this.id = id;
+        this.balance = BigDecimal.ZERO;
+
+        switch (accountName) {
+            case "advance": { this.accountName = AccountName.ADVANCE_ACCOUNT; }
+            case "student": { this.accountName = AccountName.STUDENT_ACCOUNT; }
+            case "premier": { this.accountName = AccountName.PREMIER_ACCOUNT; }
+        }
+    }
+
+    public Account(String accountName) {
         this.balance = BigDecimal.ZERO;
 
         switch (accountName) {
@@ -88,4 +98,54 @@ public class Account {
         account.setSuperAccount(this);
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public AccountName getAccountName() {
+        return accountName;
+    }
+
+    public void setAccountName(AccountName accountName) {
+        this.accountName = accountName;
+    }
+
+    public List<Transaction> getTransactions() {
+        return transactions;
+    }
+
+    public void setTransactions(List<Transaction> transactions) {
+        this.transactions = transactions;
+    }
+
+    public BigDecimal getBalance() {
+        return balance;
+    }
+
+    public void setBalance(BigDecimal balance) {
+        this.balance = balance;
+    }
+
+    public List<SubAccount> getAccounts() {
+        return accounts;
+    }
+
+    public void setAccounts(List<SubAccount> accounts) {
+        this.accounts = accounts;
+    }
+
+    @Override
+    public String toString() {
+        return "Account{" +
+                "id=" + id +
+                ", accountName=" + accountName +
+                ", transactions=" + transactions +
+                ", balance=" + balance +
+                ", accounts=" + accounts +
+                '}';
+    }
 }

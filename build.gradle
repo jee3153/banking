@@ -12,6 +12,17 @@ repositories {
 	mavenCentral()
 }
 
+/*
+* spring-boot-starter-test contains:
+* JUnit5
+* Spring Test & Spring Boot Test
+* AssertJ
+* Hamcrest
+* Mockito
+* JSONNassert
+* JsonPath
+*/
+
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
@@ -23,6 +34,10 @@ dependencies {
 	annotationProcessor 'org.projectlombok:lombok:1.18.8'
 	testCompileOnly 'org.projectlombok:lombok:1.18.8'
 	testAnnotationProcessor 'org.projectlombok:lombok:1.18.8'
+	testCompile 'org.testcontainers:testcontainers:1.15.2'
+	testImplementation 'org.testcontainers:postgresql:1.15.2'
+	testImplementation 'org.testcontainers:junit-jupiter:1.15.2'
+	testImplementation 'org.springframework.boot:spring-boot-starter-webflux:2.4.4'
 }
 
 test {

@@ -5,7 +5,7 @@ import com.example.banking.entities.SubAccount;
 
 import java.util.List;
 
-public interface InfSubaccountService {
+public interface SubaccountService {
     public abstract List<SubAccount> getAllAccounts(long accountId);
     public abstract Account createNewSubAc(long accountId,SubAccount accountToCreate);
 }

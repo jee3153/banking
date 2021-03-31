@@ -15,7 +15,7 @@ import java.util.UUID;
 
 @Entity
 @Table(name="Transactions")
-@Getter @Setter @NoArgsConstructor @AllArgsConstructor @ToString
+@Getter @Setter @NoArgsConstructor @AllArgsConstructor
 public class Transaction {
 
     @Id
@@ -28,10 +28,23 @@ public class Transaction {
     @JsonFormat(pattern = "dd/MM/yyyy hh:mm:ss a")
     private Timestamp paymentMadeAt;
 
-    @JsonProperty(access = JsonProperty.Access.READ_WRITE)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "account_id")
     private Account account;
 
+    public Transaction (BigDecimal payment, Account account) {
+        this.payment = payment;
+        this.account = account;
+    }
 
+    @Override
+    public String toString() {
+        return "Transaction{" +
+                "transactionId=" + transactionId +
+                ", payment=" + payment +
+                ", paymentMadeAt=" + paymentMadeAt +
+                ", account=" + (account != null ? account.getId() : "") +
+                '}';
+    }
 }

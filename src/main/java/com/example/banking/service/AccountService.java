@@ -5,7 +5,7 @@ import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
-public interface InfAccountService {
+public interface AccountService {
     public abstract List<Account> all();
     public abstract Account accountById(long id);
     public abstract Account save(Account account);

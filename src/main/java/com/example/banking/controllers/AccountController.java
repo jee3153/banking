@@ -1,7 +1,7 @@
 package com.example.banking.controllers;
 
 import com.example.banking.entities.Account;
-import com.example.banking.service.InfAccountService;
+import com.example.banking.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,10 +13,10 @@ import java.util.List;
 @RequestMapping(path = "/account", produces = "application/json")
 public class AccountController {
 
-    private InfAccountService accountService;
+    private AccountService accountService;
 
     @Autowired
-    public AccountController(InfAccountService service) {
+    public AccountController(AccountService service) {
         this.accountService = service;
     }
 
