@@ -2,6 +2,7 @@ package com.example.banking.service.impl;
 
 import com.example.banking.entities.Account;
 import com.example.banking.entities.Transaction;
+import com.example.banking.entities.TransactionKey;
 import com.example.banking.repository.AccountRepository;
 import com.example.banking.repository.TransactionRepository;
 import com.example.banking.service.TransactionService;
@@ -52,24 +53,34 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
-    public Transaction makeTransfer(Transaction transaction, long senderId, long receiverId) {
+    public Transaction makeTransfer(Transaction debitTransaction, long senderId, long receiverId) {
 
         ReentrantReadWriteLock lock = map.computeIfAbsent(senderId, (id) -> new ReentrantReadWriteLock(true));
 
         try {
 
             lock.writeLock().lock();
+            UUID uuid = UUID.randomUUID();
+            TransactionKey credit = new TransactionKey(uuid, "CREDIT");
+            TransactionKey debit = new TransactionKey(uuid, "DEBIT");
 
             /* get sender's AC & receiver's AC otherwise throw an error */
             Account senderAccount = accountRepository.getOne(senderId);
             Account receiverAccount = accountRepository.getOne(receiverId);
 
-            BigDecimal amount = transaction.getPayment(); // get amount of money from transaction
 
+
+            BigDecimal amount = debitTransaction.getPayment(); // get amount of money from transaction
+            Transaction creditTransaction = new Transaction(credit, amount, senderAccount, senderAccount);
+
+            debitTransaction.setTransactionKey(debit);
+            debitTransaction.setParticipant(receiverAccount);
             senderAccount.transfer(receiverAccount, amount); // transfer money from a sender to a receiver
+            receiverAccount.addTransaction(creditTransaction);
             accountRepository.save(senderAccount);
             accountRepository.save(receiverAccount);
-            return transactionRepository.save(transaction);
+
+            return transactionRepository.saveAll(List.of(debitTransaction, creditTransaction)).get(0);
 
         } finally {
 
@@ -85,6 +96,10 @@ public class TransactionServiceImpl implements TransactionService {
             Account account = accountRepository.getOne(accountId);
 
             BigDecimal amount = transaction.getPayment();
+
+            TransactionKey transactionKey = new TransactionKey(UUID.randomUUID(), "DEBIT");
+            transaction.setTransactionKey(transactionKey);
+
             account.takeBalance(amount);
             account.addTransaction(transaction);
             transaction.setAccount(account);

@@ -1,6 +1,7 @@
 package com.example.banking.controllers;
 
 import com.example.banking.entities.Transaction;
+import com.example.banking.entities.TransactionKey;
 import com.example.banking.service.TransactionService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -61,7 +62,7 @@ public class TransactionController {
     ResponseEntity<String> deleteTransaction(@PathVariable UUID id) {
         log.info("Executed deleteTransaction");
         transactionService.deleteTransaction(id);
-        return new ResponseEntity<String>("Deleted Successfully", HttpStatus.ACCEPTED);
+        return new ResponseEntity<String>("Deleted Successfully", HttpStatus.NO_CONTENT);
     }
 
 

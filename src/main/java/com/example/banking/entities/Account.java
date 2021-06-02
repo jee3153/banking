@@ -3,6 +3,7 @@ package com.example.banking.entities;
 
 
 import com.example.banking.utils.AccountName;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 
 import javax.persistence.*;
@@ -15,6 +16,7 @@ import java.util.List;
 @Entity
 @Table(name="accounts")
 @NoArgsConstructor
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "transactions"})
 public class Account {
 
     @Id
