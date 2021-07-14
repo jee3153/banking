@@ -35,3 +35,6 @@ out/
 
 ### VS Code ###
 .vscode/
+
+### React App ###
+src/frontend/node_modules/

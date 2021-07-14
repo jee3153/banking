@@ -16,6 +16,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping(path = "/transaction", produces = "application/json")
+@CrossOrigin
 public class TransactionController {
 
     private static final Logger log = LoggerFactory.getLogger(TransactionController.class);
